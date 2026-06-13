@@ -39,8 +39,7 @@ def actualizar_grafico():
     ax.plot(puntos_transformados[0], puntos_transformados[1], 'b-', linewidth=2, label=f"Transformada")
     
     if estado["ver_coordenadas"]:
-        # ✅ CORREGIDO: puntos originales son ROJOS (eran azules) y formato de texto
-        for x, y in zip(puntos_originales[0], puntos_originales[1]):
+         for x, y in zip(puntos_originales[0], puntos_originales[1]):
             ax.plot(x, y, 'ro', markersize=4)
             ax.text(x + 0.08, y + 0.08, f"({x:.1f},{y:.1f})", color="red", fontsize=8)
         
@@ -55,8 +54,6 @@ def actualizar_grafico():
     ax.set_xlim(-8, 8)
     ax.set_ylim(-8, 8)
     ax.legend(loc="upper right")
-    
-    # ✅ CORREGIDO: faltaban comillas en las claves del diccionario
     ax.set_title(
         f"Rotacion:{estado['angulo']}° | Escala:x{estado['escala']:.1f}",
         fontsize=12, fontweight="bold"
@@ -67,7 +64,7 @@ def actualizar_coordenadas(event):
     global puntos_originales
     try:
         texto_x = text_box_x.text
-        texto_y = text_box_y.text  # ✅ CORREGIDO: faltaba el .text aquí
+        texto_y = text_box_y.text  
         
         x = list(map(float, texto_x.strip().split(',')))
         y = list(map(float, texto_y.strip().split(',')))
@@ -80,7 +77,7 @@ def actualizar_coordenadas(event):
         estado["angulo"] = 0
         estado["escala"] = 1.0
         actualizar_grafico()
-        print("coordenadas actualizadas con exito") # ✅ corregido error de escritura
+        print("coordenadas actualizadas con exito") 
     except Exception as e:
         print(f"error verificar el formato de los numeros deben ser seguidos con comas :{e}")
 
@@ -93,18 +90,16 @@ def rotar_der(event):
     actualizar_grafico()
 
 def ampliar(event):
-    # ✅ CORREGIDO: condición mal escrita
     if estado["escala"] < 3.0:
         estado["escala"] += 0.5
     actualizar_grafico()
 
-def reducir(event): # ✅ CORREGIDO: nombre del parámetro (era evemt)
-    # ✅ CORREGIDO: condición mal escrita
+def reducir(event): 
     if estado["escala"] > 0.3:
         estado["escala"] -= 0.5
     actualizar_grafico()
 
-def resetear(event): # ✅ CORREGIDO: nombre del parámetro (era evemt)
+def resetear(event): 
     estado["angulo"] = 0
     estado["escala"] = 1.0
     text_box_x.set_val(",".join(map(str, puntos_originales[0])))
@@ -115,16 +110,15 @@ def togglew_coordenadas(label):
     estado["ver_coordenadas"] = not estado["ver_coordenadas"]
     actualizar_grafico()
 
-# ---------------------- INTERFAZ ----------------------
 fig, ax = plt.subplots(figsize=(8, 8))
 fig.subplots_adjust(bottom=0.32)
 
 # caja de para la x
 ax_text_x = plt.axes([0.12, 0.24, 0.75, 0.04])
-text_box_x = TextBox(ax_text_x, "Fila 0 - Coordenadas X:", textalignment="left") # ✅ nombre corregido
+text_box_x = TextBox(ax_text_x, "Fila 0 - Coordenadas X:", textalignment="left") 
 text_box_x.set_val(",".join(map(str, puntos_originales[0])))
 
-# caja de para la y ✅ CORREGIDO: posición y nombre correcto
+# caja de para la y 
 ax_text_y = plt.axes([0.12, 0.18, 0.75, 0.04])
 text_box_y = TextBox(ax_text_y, "Fila 1 - Coordenadas Y:", textalignment="left")
 text_box_y.set_val(",".join(map(str, puntos_originales[1])))
